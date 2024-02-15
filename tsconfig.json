@@ -1,18 +1,15 @@
 {
-  "extends": "@tsconfig/node12/tsconfig.json",
+  "extends": "@tsconfig/node18/tsconfig.json",
   "compilerOptions": {
     "outDir": "dist",
     "strictPropertyInitialization": false,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "sourceMap": true,
-    "inlineSources": true
+    "inlineSources": true,
+    "moduleResolution": "node",
+    "module": "es2020"
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/__tests__/*"
-  ]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "**/__tests__/*"]
 }

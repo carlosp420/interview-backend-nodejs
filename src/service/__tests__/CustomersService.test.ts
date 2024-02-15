@@ -29,7 +29,7 @@ describe('CustomersServiceImpl', () => {
           id: 'customerId',
           name: 'name',
           lastName: 'lastName',
-          email: 'nlastName@miblum.com',
+          email: 'nlastName@ihfintech.com.pe',
         },
       ]);
       expect(repository.findByFilter).toBeCalledWith({
