@@ -92,11 +92,11 @@ describe('CustomersRepositoryImpl', () => {
         Promise.resolve({ data: { results, info } })
       );
 
-    it('should return customers from random user. Match start of firstName', async () => {
+    it('should return customers from random user. Match any characters of firstName', async () => {
       // Execute
       const response = await repository.findByFilter(
         new Customer({
-          name: 'B',
+          name: 'R',
         })
       );
 
@@ -104,7 +104,7 @@ describe('CustomersRepositoryImpl', () => {
       expect(response).toEqual(expected);
     });
 
-    it('should return customers from random user. Match any characters of customer names', async () => {
+    it('should return customers from random user. Match any characters of lastName', async () => {
       // Execute
       const response = await repository.findByFilter(
         new Customer({

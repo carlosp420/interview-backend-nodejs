@@ -23,11 +23,10 @@ export class CustomersRepositoryImpl implements CustomersRepository {
       return [];
     }
 
+        // item.name.first.toLowerCase().includes(customer.name.toLowerCase())
     return result.data.results
-      .filter(
-        (item: RandomUser) =>
-          item.name.first.toLowerCase().includes(customer.name.toLowerCase()) ||
-          item.name.last.toLowerCase().includes(customer.name.toLowerCase())
+      .filter((item: RandomUser) =>
+        item.name.first.toLowerCase().startsWith(customer.name.toLowerCase())
       )
       .map(
         (item: RandomUser) =>
