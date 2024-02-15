@@ -40,5 +40,42 @@ describe('CustomersController', () => {
         name: 'A',
       });
     });
+
+    it('should return customers using last name', async () => {
+      // Prepare
+      const service = {
+        findByFilter: jest.fn(() =>
+          Promise.resolve([
+            {
+              id: 'customerId',
+              name: 'name',
+              lastName: 'lastName',
+              email: 'email',
+            },
+          ])
+        ),
+      } as unknown as CustomersService;
+
+      const controller = new CustomersController(service);
+
+      // Execute
+      const response = await controller.findByFilter({
+        httpMethod: 'GET',
+        resource: '/customers',
+        queryStringParameters: {
+          lastName: 'A',
+        },
+      } as unknown as APIGatewayProxyEvent);
+
+      // Validate
+      expect(response).toEqual({
+        statusCode: 200,
+        isBase64Encoded: false,
+        body: '[{"id":"customerId","name":"name","lastName":"lastName","email":"email"}]',
+      });
+      expect(service.findByFilter).toBeCalledWith({
+        lastName: 'A',
+      });
+    });
   });
 });

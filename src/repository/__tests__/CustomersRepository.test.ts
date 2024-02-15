@@ -108,7 +108,7 @@ describe('CustomersRepositoryImpl', () => {
       // Execute
       const response = await repository.findByFilter(
         new Customer({
-          name: 'O',
+          lastName: 'S',
         })
       );
 

@@ -16,6 +16,22 @@ type RandomUser = {
   };
 };
 
+type Results = RandomUser[];
+
+function filterByNames(results: Results, customer: Customer) {
+  if (customer.name) {
+    return results.filter((item: RandomUser) =>
+      item.name.first.toLowerCase().includes(customer.name.toLowerCase())
+    );
+  }
+  if (customer.lastName) {
+    return results.filter((item: RandomUser) =>
+      item.name.last.toLowerCase().includes(customer.lastName.toLowerCase())
+    );
+  }
+  return [];
+}
+
 export class CustomersRepositoryImpl implements CustomersRepository {
   async findByFilter(customer: Customer): Promise<Customer[]> {
     const result = await axios.get('https://randomuser.me/api/?results=100');
@@ -23,19 +39,14 @@ export class CustomersRepositoryImpl implements CustomersRepository {
       return [];
     }
 
-        // item.name.first.toLowerCase().includes(customer.name.toLowerCase())
-    return result.data.results
-      .filter((item: RandomUser) =>
-        item.name.first.toLowerCase().startsWith(customer.name.toLowerCase())
-      )
-      .map(
-        (item: RandomUser) =>
-          new Customer({
-            id: item.id.value,
-            name: item.name.first,
-            lastName: item.name.last,
-            dateOfBirth: item.dob.date,
-          })
-      );
+    return filterByNames(result.data.results, customer).map(
+      (item: RandomUser) =>
+        new Customer({
+          id: item.id.value,
+          name: item.name.first,
+          lastName: item.name.last,
+          dateOfBirth: item.dob.date,
+        })
+    );
   }
 }

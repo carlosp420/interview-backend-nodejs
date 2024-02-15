@@ -6,13 +6,23 @@ export class CustomersController {
   constructor(private service: CustomersService) {}
 
   async findByFilter(event: APIGatewayProxyEvent) {
-    if (!event.queryStringParameters?.name) {
+    const name = event.queryStringParameters?.name;
+    const lastName = event.queryStringParameters?.lastName;
+
+    if (!name && !lastName) {
       return this.apiResponseBadRequestError();
     }
-    const { name } = event.queryStringParameters;
 
+    // return when user sent "name" in query
+    if (name) {
+      return this.apiResponseOk(
+        await this.service.findByFilter(new Customer({ name }))
+      );
+    }
+
+    // return when user sent "lastName" in query
     return this.apiResponseOk(
-      await this.service.findByFilter(new Customer({ name }))
+      await this.service.findByFilter(new Customer({ lastName }))
     );
   }
 
