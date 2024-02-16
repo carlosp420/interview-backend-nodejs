@@ -90,6 +90,15 @@ describe('CustomersRepositoryImpl', () => {
       )
       .mockImplementationOnce(() =>
         Promise.resolve({ data: { results, info } })
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({ data: { results, info } })
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({ data: { results, info } })
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({ data: { results, info } })
       );
 
     it('should return customers from random user. Match any characters of firstName', async () => {
@@ -109,6 +118,45 @@ describe('CustomersRepositoryImpl', () => {
       const response = await repository.findByFilter(
         new Customer({
           lastName: 'S',
+        })
+      );
+
+      // Validate
+      expect(response).toEqual(expected);
+    });
+
+    it('should return customers. Query parameters name and lastName used. Match name', async () => {
+      // Execute
+      const response = await repository.findByFilter(
+        new Customer({
+          name: 'R',
+          lastName: 'X',
+        })
+      );
+
+      // Validate
+      expect(response).toEqual(expected);
+    });
+
+    it('should return customers. Query parameters name and lastName used. Match lastName', async () => {
+      // Execute
+      const response = await repository.findByFilter(
+        new Customer({
+          name: 'X',
+          lastName: 'O',
+        })
+      );
+
+      // Validate
+      expect(response).toEqual(expected);
+    });
+
+    it('should return customers. Query parameters name and lastName used. Match name and lastName', async () => {
+      // Execute
+      const response = await repository.findByFilter(
+        new Customer({
+          name: 'R',
+          lastName: 'O',
         })
       );
 

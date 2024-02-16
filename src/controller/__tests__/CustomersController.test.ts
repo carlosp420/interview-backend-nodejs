@@ -4,21 +4,21 @@ import { CustomersService } from '../../service/CustomersService';
 
 describe('CustomersController', () => {
   describe('findByFilter', () => {
-    it('should return customers', async () => {
-      // Prepare
-      const service = {
-        findByFilter: jest.fn(() =>
-          Promise.resolve([
-            {
-              id: 'customerId',
-              name: 'name',
-              lastName: 'lastName',
-              email: 'email',
-            },
-          ])
-        ),
-      } as unknown as CustomersService;
+    // Prepare
+    const service = {
+      findByFilter: jest.fn(() =>
+        Promise.resolve([
+          {
+            id: 'customerId',
+            name: 'name',
+            lastName: 'lastName',
+            email: 'email',
+          },
+        ])
+      ),
+    } as unknown as CustomersService;
 
+    it('should return customers using "name" as query', async () => {
       const controller = new CustomersController(service);
 
       // Execute
@@ -41,21 +41,7 @@ describe('CustomersController', () => {
       });
     });
 
-    it('should return customers using last name', async () => {
-      // Prepare
-      const service = {
-        findByFilter: jest.fn(() =>
-          Promise.resolve([
-            {
-              id: 'customerId',
-              name: 'name',
-              lastName: 'lastName',
-              email: 'email',
-            },
-          ])
-        ),
-      } as unknown as CustomersService;
-
+    it('should return customers using "lastName" as query', async () => {
       const controller = new CustomersController(service);
 
       // Execute
@@ -74,6 +60,31 @@ describe('CustomersController', () => {
         body: '[{"id":"customerId","name":"name","lastName":"lastName","email":"email"}]',
       });
       expect(service.findByFilter).toBeCalledWith({
+        lastName: 'A',
+      });
+    });
+
+    it('should return customers using "name" and "lastName" as query', async () => {
+      const controller = new CustomersController(service);
+
+      // Execute
+      const response = await controller.findByFilter({
+        httpMethod: 'GET',
+        resource: '/customers',
+        queryStringParameters: {
+          name: 'A',
+          lastName: 'A',
+        },
+      } as unknown as APIGatewayProxyEvent);
+
+      // Validate
+      expect(response).toEqual({
+        statusCode: 200,
+        isBase64Encoded: false,
+        body: '[{"id":"customerId","name":"name","lastName":"lastName","email":"email"}]',
+      });
+      expect(service.findByFilter).toBeCalledWith({
+        name: 'A',
         lastName: 'A',
       });
     });

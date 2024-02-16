@@ -19,17 +19,28 @@ type RandomUser = {
 type Results = RandomUser[];
 
 function filterByNames(results: Results, customer: Customer) {
-  if (customer.name) {
-    return results.filter((item: RandomUser) =>
-      item.name.first.toLowerCase().includes(customer.name.toLowerCase())
+  const { name, lastName } = customer;
+  const allResults: RandomUser[] = [];
+
+  if (name) {
+    const filteredCustomers = results.filter((item: RandomUser) =>
+      item.name.first.toLowerCase().includes(name.toLowerCase())
     );
+    filteredCustomers.forEach((user: RandomUser) => {
+      if (!allResults.includes(user)) allResults.push(user);
+    });
   }
-  if (customer.lastName) {
-    return results.filter((item: RandomUser) =>
-      item.name.last.toLowerCase().includes(customer.lastName.toLowerCase())
+
+  if (lastName) {
+    const filteredCustomers = results.filter((item: RandomUser) =>
+      item.name.last.toLowerCase().includes(lastName.toLowerCase())
     );
+    filteredCustomers.forEach((user: RandomUser) => {
+      if (!allResults.includes(user)) allResults.push(user);
+    });
   }
-  return [];
+
+  return allResults;
 }
 
 export class CustomersRepositoryImpl implements CustomersRepository {

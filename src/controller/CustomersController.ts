@@ -14,15 +14,22 @@ export class CustomersController {
     }
 
     // return when user sent "name" in query
-    if (name) {
+    if (name && !lastName) {
       return this.apiResponseOk(
         await this.service.findByFilter(new Customer({ name }))
       );
     }
 
     // return when user sent "lastName" in query
+    if (!name && lastName) {
+      return this.apiResponseOk(
+        await this.service.findByFilter(new Customer({ lastName }))
+      );
+    }
+
+    // return when user sent "name" and "lastName" in query
     return this.apiResponseOk(
-      await this.service.findByFilter(new Customer({ lastName }))
+      await this.service.findByFilter(new Customer({ name, lastName }))
     );
   }
 
